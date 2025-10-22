@@ -175,7 +175,141 @@
     color: #333;
     transition: color 0.3s ease;
   }
+/* === SIDEBAR === */
+.sidebar {
+  position: fixed;
+  top: 70px; /* sejajar dengan header */
+  left: 0;
+  bottom: 0;
+  width: 230px;
+  background: linear-gradient(180deg, #1e293b, #0f172a);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.35);
+  z-index: 900;
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+  border-top-right-radius: 10px;
+}
 
+/* Scrollbar Sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #005fe5ff;
+  border-radius: 10px;
+}
+
+/* Header Sidebar */
+.sidebar-header {
+  text-align: center;
+  margin: 10px 0 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #00e676;
+  font-size: 18px;
+}
+
+/* Menu Sidebar */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  flex: 1;
+}
+
+.sidebar-menu li {
+  width: 100%;
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+  font-size: 15px;
+}
+
+.sidebar-menu li a:hover {
+  background: #00e676;
+  color: #000;
+  border-left: 4px solid #000;
+  font-weight: 600;
+  transform: translateX(3px);
+}
+
+.sidebar-menu li a i {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* === TOMBOL TOGGLE === */
+#toggle-btn {
+  position: fixed;
+  top: 13px;
+  left: 250px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  transition: all 0.3s ease;
+}
+
+#toggle-btn .toggle-logo {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: white;
+  padding: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#toggle-btn .toggle-logo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* === Sidebar Hide === */
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+body {
+  margin-left: 230px;
+  transition: margin-left 0.3s ease;
+}
+
+body.sidebar-hidden {
+  margin-left: 0;
+}
+
+#toggle-btn.sidebar-hidden {
+  left: 15px;
+}
+
+/* === RESPONSIF === */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 200px;
+    top: 60px;
+  }
+  body {
+    margin-left: 0;
+  }
+  #toggle-btn {
+    left: 15px;
+  }
+}
   /* ====== ANIMASI WARNA IKON SESUAI DATA ====== */
   .hot { color: #e53935; animation: pulseHot 1.5s infinite alternate; }
   .warm { color: #fb8c00; animation: pulseWarm 1.5s infinite alternate; }
@@ -253,7 +387,27 @@
 
 <body>
   <div class="watermark"></div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+
+<!-- === SIDEBAR === -->
+<div id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <h2><i class="fa-solid fa-clipboard-list"></i> Menu</h2>
+  </div>
+  <ul class="sidebar-menu">
+    <li><a href="index.html"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+    <li><a href="grafik.html"><i class="fa-solid fa-chart-line"></i> Grafik</a></li>
+    <li><a href="history.html"><i class="fa-solid fa-clock-rotate-left"></i> History</a></li>
+    <li><a href="masalah.html"><i class="fa-solid fa-screwdriver-wrench"></i> TroubleShooting</a></li>
+    <li><a href="proses_maintenence.html"><i class="fa-solid fa-gears"></i> Maintenance</a></li>
+  </ul>
+</div>
+
+<!-- Tombol Toggle (Ganti dari ☰ ke ikon logo) -->
+<button id="toggle-btn" title="Sembunyikan Sidebar">
+  <img src="assets/bmkg-logo.jpg" alt="Logo" class="toggle-logo">
+</button>
   <header class="main-header">
     <h1><i class="fa-solid fa-gauge"></i> Dashboard</h1>
     <div class="header-right">
@@ -406,6 +560,17 @@
     ambilData();
     setInterval(ambilData, 5000);
   });
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.getElementById("toggle-btn");
+
+toggleBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("hidden");
+  document.body.classList.toggle("sidebar-hidden");
+  toggleBtn.classList.toggle("sidebar-hidden");
+  toggleBtn.title = sidebar.classList.contains("hidden")
+    ? "Tampilkan Sidebar"
+    : "Sembunyikan Sidebar";
+});
 </script>
 </body>
 </html>
